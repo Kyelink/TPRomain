@@ -1,6 +1,7 @@
 ﻿// // See https://aka.ms/new-console-template for more information
 
 using System;
+using System.Linq.Expressions;
 // using System.Collections.Generic;
 
 namespace HelloWorld
@@ -18,102 +19,110 @@ namespace HelloWorld
             do
             {
 
-                Console.WriteLine("Saisissez une option : ");
-                Console.WriteLine("1. Ajouter un livre");
-                Console.WriteLine("2. Afficher tous les livres");
-                Console.WriteLine("3. Rechercher un livre par titre");
-                Console.WriteLine("4. Supprimer un livre");
-                Console.WriteLine("5. Quitter");
-                n = Convert.ToInt32(Console.ReadLine()!);
-                switch (n)
+                try
                 {
-                    case 1:
-                        bool continuer = false;
-                        do
-                        {
-                            Console.WriteLine("Saisissez titre :");
-                            string titre = Console.ReadLine()!;
-
-                            int annee = 0;
-                            bool validYear = false;
+                    Console.WriteLine("Saisissez une option : ");
+                    Console.WriteLine("1. Ajouter un livre");
+                    Console.WriteLine("2. Afficher tous les livres");
+                    Console.WriteLine("3. Rechercher un livre par titre");
+                    Console.WriteLine("4. Supprimer un livre");
+                    Console.WriteLine("5. Quitter");
+                    n = Convert.ToInt32(Console.ReadLine()!);
+                    switch (n)
+                    {
+                        case 1:
+                            bool continuer = false;
                             do
                             {
-                                try
-                                {
-                                    Console.WriteLine("Saisissez année de publication :");
-                                    annee = Convert.ToInt32(Console.ReadLine()!);
-                                    validYear = true;
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine($"Une erreur s'est produite : {e.Message}");
-                                }
+                                Console.WriteLine("Saisissez titre :");
+                                string titre = Console.ReadLine()!;
 
-                            } while (!validYear);
-                            Console.WriteLine("Saisissez nom de l'auteur :");
-                            string nom = Console.ReadLine()!;
-                            Console.WriteLine("Saisissez prénom de l'auteur :");
-                            string prenom = Console.ReadLine()!;
-                            Auteur aut = new(nom, prenom);
-                            Livre book = new(titre, annee, aut);
-                            librairie.Add(book);
-                            Console.WriteLine("Livre ajouté!");
-                            Console.WriteLine("Ajouter nouveau livre? (Y/N)");
-                            string ans = Console.ReadLine()!;
-                            if (ans == "y" || ans == "Y")
+                                int annee = 0;
+                                bool validYear = false;
+                                do
+                                {
+                                    try
+                                    {
+                                        Console.WriteLine("Saisissez année de publication :");
+                                        annee = Convert.ToInt32(Console.ReadLine()!);
+                                        validYear = true;
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine($"Une erreur s'est produite : {e.Message}");
+                                    }
+
+                                } while (!validYear);
+                                Console.WriteLine("Saisissez nom de l'auteur :");
+                                string nom = Console.ReadLine()!;
+                                Console.WriteLine("Saisissez prénom de l'auteur :");
+                                string prenom = Console.ReadLine()!;
+                                Auteur aut = new(nom, prenom);
+                                Livre book = new(titre, annee, aut);
+                                librairie.Add(book);
+                                Console.WriteLine("Livre ajouté!");
+                                Console.WriteLine("Ajouter nouveau livre? (Y/N)");
+                                string ans = Console.ReadLine()!;
+                                if (ans == "y" || ans == "Y")
+                                {
+                                    continuer = true;
+                                }
+                                else
+                                {
+                                    continuer = false;
+                                }
+                            } while (continuer);
+                            break;
+                        case 2:
+                            Console.WriteLine("Liste des livres :");
+                            foreach (Livre x in librairie)
                             {
-                                continuer = true;
-                            }
-                            else
-                            {
-                                continuer = false;
-                            }
-                        } while (continuer);
-                        break;
-                    case 2:
-                        Console.WriteLine("Liste des livres :");
-                        foreach (Livre x in librairie)
-                        {
-                            x.AfficherInformations();
-                        }
-                        break;
-                    case 3:
-                        bool found = false;
-                        Console.WriteLine("Saisissez titre de livre :");
-                        string titreAChercher = Console.ReadLine()!;
-                        foreach (Livre x in librairie)
-                        {
-                            if (x.Titre == titreAChercher)
-                            {
-                                found = true;
                                 x.AfficherInformations();
-                                break;
                             }
-                        }
-                        if (!found)
-                        {
-                            Console.WriteLine("Livre non trouvé!");
-                        }
-                        break;
-                    case 4:
-                        bool found2 = false;
-                        Console.WriteLine("Saisissez titre de livre :");
-                        string titreAChercher2 = Console.ReadLine()!;
-                        foreach (Livre x in librairie)
-                        {
-                            if (x.Titre == titreAChercher2)
+                            break;
+                        case 3:
+                            bool found = false;
+                            Console.WriteLine("Saisissez titre de livre :");
+                            string titreAChercher = Console.ReadLine()!;
+                            foreach (Livre x in librairie)
                             {
-                                found2 = true;
-                                librairie.Remove(x);
-                                Console.WriteLine("Livre supprimé!");
-                                break;
+                                if (x.Titre == titreAChercher)
+                                {
+                                    found = true;
+                                    x.AfficherInformations();
+                                    break;
+                                }
                             }
-                        }
-                        if (!found2)
-                        {
-                            Console.WriteLine("Livre non trouvé!");
-                        }
-                        break;
+                            if (!found)
+                            {
+                                Console.WriteLine("Livre non trouvé!");
+                            }
+                            break;
+                        case 4:
+                            bool found2 = false;
+                            Console.WriteLine("Saisissez titre de livre :");
+                            string titreAChercher2 = Console.ReadLine()!;
+                            foreach (Livre x in librairie)
+                            {
+                                if (x.Titre == titreAChercher2)
+                                {
+                                    found2 = true;
+                                    librairie.Remove(x);
+                                    Console.WriteLine("Livre supprimé!");
+                                    break;
+                                }
+                            }
+                            if (!found2)
+                            {
+                                Console.WriteLine("Livre non trouvé!");
+                            }
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Une erreur s'est produite : {ex.Message}");
+
                 }
             } while (n != 5);
             Console.WriteLine("Programme terminé!");
